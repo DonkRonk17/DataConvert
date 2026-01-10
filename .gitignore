@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+venv/
+ENV/
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Test files
+test_*.json
+test_*.csv
+test_*.xml
+test_*.yaml
