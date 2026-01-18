@@ -316,4 +316,12 @@ dataconvert input.json --to csv -o output.csv
 
 ---
 
+## 🙏 Credits
+
+Created by **Randell Logan Smith and Team Brain** at [Metaphy LLC](https://metaphysicsandcomputing.com)
+
+Part of the HMSS (Heavenly Morning Star System) ecosystem.
+
+---
+
 **🔄 Convert all the things!**
