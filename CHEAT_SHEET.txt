@@ -1,0 +1,247 @@
+================================================================================
+DATACONVERT CHEAT SHEET
+================================================================================
+Universal Data Format Converter - Zero Dependencies
+================================================================================
+
+QUICK START
+-----------
+1. Navigate to tool: cd AutoProjects/DataConvert
+2. Basic usage: python dataconvert.py <file> --to <format>
+3. Example: python dataconvert.py data.json --to csv
+
+================================================================================
+SUPPORTED FORMATS
+--------------------------------------------------------------------------------
+
+    JSON  <-->  CSV  <-->  XML  <-->  YAML
+
+All 16 combinations supported! (4 formats x 4 outputs)
+
+================================================================================
+BASIC COMMANDS
+--------------------------------------------------------------------------------
+
+JSON Conversions:
+  python dataconvert.py file.json --to csv
+  python dataconvert.py file.json --to xml
+  python dataconvert.py file.json --to yaml
+
+CSV Conversions:
+  python dataconvert.py file.csv --to json
+  python dataconvert.py file.csv --to xml
+  python dataconvert.py file.csv --to yaml
+
+XML Conversions:
+  python dataconvert.py file.xml --to json
+  python dataconvert.py file.xml --to csv
+  python dataconvert.py file.xml --to yaml
+
+YAML Conversions:
+  python dataconvert.py file.yaml --to json
+  python dataconvert.py file.yaml --to csv
+  python dataconvert.py file.yaml --to xml
+
+================================================================================
+CLI FLAGS & OPTIONS
+--------------------------------------------------------------------------------
+
+Required:
+  <input>              Input file path
+  --to FORMAT          Output format (json, csv, xml, yaml)
+
+Optional:
+  --output, -o FILE    Save to file (default: stdout)
+  --root NAME          Root element name for XML (default: root)
+  --pretty             Pretty print output (indented)
+  --help, -h           Show help message
+
+================================================================================
+OUTPUT OPTIONS
+--------------------------------------------------------------------------------
+
+To stdout (default):
+  python dataconvert.py data.json --to csv
+
+To file:
+  python dataconvert.py data.json --to csv --output data.csv
+  python dataconvert.py data.json --to csv -o data.csv
+
+Pretty print:
+  python dataconvert.py data.csv --to json --pretty
+
+================================================================================
+XML OPTIONS
+--------------------------------------------------------------------------------
+
+Custom root element:
+  python dataconvert.py data.json --to xml --root config
+  python dataconvert.py data.json --to xml --root report
+
+Pretty XML:
+  python dataconvert.py data.json --to xml --pretty
+
+================================================================================
+PYTHON API
+--------------------------------------------------------------------------------
+
+Import:
+  from dataconvert import DataConvert
+
+Parse formats:
+  data = DataConvert.json_to_dict(json_string)
+  data = DataConvert.csv_to_dict(csv_string)
+  data = DataConvert.xml_to_dict(xml_string)
+  data = DataConvert.yaml_to_dict(yaml_string)
+
+Serialize formats:
+  output = DataConvert.dict_to_json(data, pretty=True)
+  output = DataConvert.dict_to_csv(data)
+  output = DataConvert.dict_to_xml(data, root_name="root")
+  output = DataConvert.dict_to_yaml(data)
+
+Convert between formats:
+  result = DataConvert.convert("json", "csv", json_string)
+  result = DataConvert.convert("csv", "yaml", csv_string)
+  result = DataConvert.convert("xml", "json", xml_string)
+
+File operations:
+  content = DataConvert.read_file("input.json")
+  DataConvert.write_file("output.csv", content)
+
+================================================================================
+COMMON WORKFLOWS
+--------------------------------------------------------------------------------
+
+1. API Response to CSV:
+   python dataconvert.py response.json --to csv -o data.csv
+
+2. Config File Migration:
+   python dataconvert.py config.json --to yaml -o config.yaml
+
+3. XML Legacy to JSON:
+   python dataconvert.py legacy.xml --to json --pretty -o modern.json
+
+4. Spreadsheet to Config:
+   python dataconvert.py settings.csv --to yaml -o settings.yaml
+
+================================================================================
+BATCH CONVERSION
+--------------------------------------------------------------------------------
+
+Bash (Linux/macOS):
+  for file in *.json; do
+    python dataconvert.py "$file" --to csv -o "${file%.json}.csv"
+  done
+
+PowerShell (Windows):
+  Get-ChildItem *.json | ForEach-Object {
+    python dataconvert.py $_.Name --to csv -o ($_.BaseName + ".csv")
+  }
+
+================================================================================
+FORMAT NOTES
+--------------------------------------------------------------------------------
+
+JSON:
+  - Full support for objects, arrays, nested structures
+  - Boolean, null, number types preserved
+  - Pretty print adds indentation
+
+CSV:
+  - First row = headers
+  - Flat structure only (nested data simplified)
+  - All values become strings
+  - Handles quoted fields with commas
+
+XML:
+  - Attributes stored in @attributes object
+  - Text content in #text property
+  - Repeated elements become arrays
+  - Custom root element with --root
+
+YAML:
+  - Basic YAML support (built-in parser)
+  - Nested structures work
+  - Complex YAML may need PyYAML
+  - Boolean: true/false
+
+================================================================================
+INTEGRATION WITH TEAM BRAIN TOOLS
+--------------------------------------------------------------------------------
+
+With ContextCompressor:
+  # Compress large JSON before processing
+  python contextcompressor.py large.json --summary > summary.json
+  python dataconvert.py summary.json --to yaml
+
+With SynapseLink:
+  # Convert Synapse messages to different formats
+  python dataconvert.py message.json --to yaml
+
+With ConfigManager:
+  # Migrate configs between formats
+  python dataconvert.py old_config.xml --to json
+
+================================================================================
+TROUBLESHOOTING
+--------------------------------------------------------------------------------
+
+Error: "File not found"
+  -> Check file path is correct
+  -> Use full path if needed
+
+Error: "Unsupported input format"
+  -> File extension must be .json, .csv, .xml, .yaml, or .yml
+  -> Rename file if extension doesn't match content
+
+Error: "Invalid JSON"
+  -> Check JSON syntax (use jsonlint online)
+  -> Look for missing quotes, commas, brackets
+
+Error: "Invalid XML"
+  -> Check XML syntax (use xmllint)
+  -> Ensure proper opening/closing tags
+
+CSV Issues:
+  -> Use quoted fields for values with commas
+  -> Check header row exists
+
+YAML Issues:
+  -> Use consistent indentation (2 spaces)
+  -> Complex YAML may need PyYAML library
+
+================================================================================
+PERFORMANCE
+--------------------------------------------------------------------------------
+
+File Size Recommendations:
+  - Small (<1MB): Instant
+  - Medium (1-10MB): Fast
+  - Large (10-100MB): Slower but works
+  - Very Large (>100MB): Consider streaming tools
+
+Memory:
+  - Entire file loaded into memory
+  - For huge files, use streaming alternatives
+
+================================================================================
+RESOURCES
+--------------------------------------------------------------------------------
+
+Documentation:   AutoProjects/DataConvert/README.md
+Examples:        AutoProjects/DataConvert/EXAMPLES.md
+Integration:     AutoProjects/DataConvert/INTEGRATION_PLAN.md
+GitHub:          https://github.com/DonkRonk17/DataConvert
+Issues:          https://github.com/DonkRonk17/DataConvert/issues
+
+================================================================================
+CREDITS
+--------------------------------------------------------------------------------
+
+Built by:        FORGE (Team Brain)
+For:             Logan Smith / Metaphy LLC
+Part of:         Beacon HQ / Team Brain Ecosystem
+License:         MIT
+
+================================================================================
